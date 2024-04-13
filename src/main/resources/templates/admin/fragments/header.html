@@ -1,0 +1,104 @@
+ <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="header">
+
+  <div class="nav-header" style="background-color: #e0e0e0;" >
+            <div class="brand-logo" >
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="/adminview/images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="/adminview/images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="/adminview/images/logoadmin.png" alt="" width="100px" height="70px"
+                       style="margin: 0 auto; display: block; vertical-align: middle; margin-top: -20px;">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">    
+            <div class="header-content clearfix">
+                
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                        </div>
+                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
+                        <div class="drop-down animated flipInX d-md-none">
+                            <form action="#">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                       
+                        <!-- <li class="icons dropdown d-none d-md-flex">
+                            <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
+                                <span>English</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                            </a>
+                            <div class="drop-down dropdown-language animated fadeIn  dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li><a href="javascript:void()">English</a></li>
+                                        <li><a href="javascript:void()">Dutch</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li> -->
+                        
+                        <li class="icons dropdown">
+                        <h6 class="mr-3 activity active" th:if="${fullName != null}"
+											th:text="${fullName}"
+											style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;"></h6>
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="https://zero1.sg/img/accountlogin-icon.png" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="#"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <hr class="my-2">
+									<form id="logout-form" action="/logout" method="post">
+									    <li>
+									        <button type="submit" style="background: none; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;">
+									            <i class="icon-key"></i>  
+									            <span>Logout</span>
+									        </button>
+									    </li>
+									</form>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+        </body>
+</html>

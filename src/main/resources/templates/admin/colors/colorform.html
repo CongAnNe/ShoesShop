@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/fragments/home.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div layout:fragment="content">
+		<section class="container-fluid">
+
+			<div class="card">
+				<div class="card-header">
+					<h2>LIST OF COLOR</h2>
+				</div>
+
+				<div class="card-body">
+					<div class="row mt-2 mb-2">
+						<div class="col">
+							<form action="" id="searchForm">
+								<div class="form-inline float-right">
+									<label for="searchColorName">Search by color name:</label> <input
+										type="text" class="form-control ml-2" name="colorName"
+										id="searchcolorName" placeholder="Seacrh Color">
+									<button class="btn btn-outline-info ml-2" type="button"
+										onclick="searchColors()">
+										<i class="fa fa-search"></i> Search
+									</button>
+									<button class="btn btn-outline-secondary ml-2" type="button"
+										onclick="getAllColors()">
+										<i class="fa fa-list"></i> All Colors
+									</button>
+								</div>
+							</form>
+							<button type="button" class="btn btn-outline-info float-left"
+								onclick="addColor()">
+								<i class="fa fa-plus-square-o"></i> Add new colors
+							</button>
+
+						</div>
+					</div>
+					<table id="colorTable" class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>CreateAt</th>
+								<th>UpdateAt</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- Dữ liệu categories sẽ được thêm vào đây bằng Ajax -->
+						</tbody>
+					</table>
+
+					<!-- modal edit category -->
+					<div class="modal fade" id="editColorModal" tabindex="-1"
+						role="dialog" aria-labelledby="editColorModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="editColorModalLabel">Edit
+										color</h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<!-- Form chỉnh sửa danh mục sẽ được thêm vào đây -->
+									<form id="editColorForm">
+										<div class="form-group d-none">
+											<label for="editColorId">ID:</label> <input type="text"
+												class="form-control" id="editColorId" name="idColor"
+												readonly>
+										</div>
+										<div class="form-group">
+											<label for="editColorName">Color Name:</label> <input
+												type="text" class="form-control" id="editColorName"
+												name="colorName">
+											<div th:id="colorName-error" class="text-danger form-text "></div>
+
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary"
+										id="saveColorChanges">Save changes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="card-footer">
+					<nav class="float-right" th:id="paging"></nav>
+				</div>
+
+			</div>
+		</section>
+		<script src="/adminview/js/color.js"></script>
+	</div>
+</body>
+
+</html>

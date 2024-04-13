@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{shop/fragments/index.html}">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+	<style>
+.del {
+	text-decoration: line-through;
+	opacity: 0.7;
+}
+
+.product_price {
+	margin-right: 10px; /* Đặt khoảng cách 10px giữa hai thẻ */
+}
+
+.modal_size, .sidebar_widget{
+    display: flex;
+    align-items: center;
+}
+
+.modal_size h2, .sidebar_widget h2 {
+    margin-right: 10px; 
+}
+
+.box_quantity {
+    display: inline-flex;
+    align-items: center;
+}
+
+.box_quantity .minus,
+.box_quantity .plus {
+    cursor: pointer;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    user-select: none;
+    border-radius: 2px;
+}
+
+.box_quantity input {
+    width: 60px; 
+}
+.box_quantity .minus:hover,
+.box_quantity .plus:hover {
+  background-color: #ff0000;
+}
+
+.error-text {
+    display: block;
+    clear: both; /* Đảm bảo rằng phần tử sẽ xuống dòng mới */
+    margin-top: 5px; /* Khoảng cách giữa chữ báo lỗi và input quantity */
+}
+
+#category option:hover {
+	cursor: pointer;
+	background-color: #f0f0f0; /* Màu nền khi hover */
+	background-color: #f0f0f0;
+    border: 1px solid #ddd; /* Đường viền khi hover */
+    border-radius: 5px; /* Bo tròn góc */
+    padding: 10px;
+}
+
+#category option {
+	padding-top: 5px;
+	padding-bottom: 5px /* Khoảng cách giữa các option */
+}
+
+.layere_categorie {
+    border: 1px solid #ddd; /* Đặt đường viền */
+    border-radius: 5px; /* Bo tròn góc */
+    padding: 10px; /* Khoảng cách nội dung từ mép */
+}
+#category option:checked {
+    background-color: #15a7b4; /* Màu nền khi được chọn */
+    font-weight: bold; /* In đậm khi được chọn */
+}
+.layere_categorie ul {
+    list-style: none; /* Ẩn dấu hiệu danh sách */
+    padding: 0;
+}
+
+.layere_categorie li {
+    margin-bottom: 5px; /* Khoảng cách giữa mỗi mục danh sách */
+}
+
+.layere_categorie input[type="radio"] {
+    appearance: none; /* Ẩn giao diện mặc định của radio button */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px; /* Độ rộng mong muốn của radio button */
+    height: 20px; /* Chiều cao mong muốn của radio button */
+    border: 1px solid #ddd; /* Đường viền */
+    border-radius: 5px; /* Bo tròn góc */
+    outline: none; /* Ẩn đường viền khi được focus */
+    margin-right: 5px; /* Khoảng cách giữa mỗi radio button */
+}
+
+.layere_categorie input[type="radio"]:checked {
+    background-color: #15a7b4; /* Màu nền khi được chọn */
+}
+
+.layere_categorie h4 {
+    background-color: #15a7b4; /* Màu nền */
+    color: #fff; /* Màu chữ */
+    padding: 10px; /* Khoảng cách với nội dung */
+    border-radius: 5px; /* Bo tròn góc */
+}
+
+.modal-content button.close {
+	position: relative;
+	left: 94%;
+	width: 30px;
+	height: 30px;
+	display: block;
+	border: 1px solid #555;
+	top: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	z-index: 9;
+}
+</style>
+		<!--pos home section-->
+		<div class=" pos_home_section mt-5">
+			<div class="row pos_home">
+				<div class="col-lg-3 col-md-8 col-12">
+					<!--sidebar banner-->
+					<div class="sidebar_widget1 banner mb-35">
+						<div class="single_banner">
+							<a href="#"><img
+								src="/shopview/assets/img/banner/banner04.png" alt=""></a>
+							<div class="banner_title">
+								<p>
+									Up to <span> 40%</span> off
+								</p>
+							</div>
+						</div>
+						<br>
+						<div class="single_banner">
+							<a href="#"><img
+								src="/shopview/assets/img/banner/banner05.png" alt=""></a>
+							<div class="banner_title title_2">
+								<p>
+									sale off <span> 30%</span>
+								</p>
+							</div>
+						</div>
+					</div>
+					<!--sidebar banner end-->
+
+					<!--categorie menu start-->
+					<div>
+						<iframe width="300" height="380" autoplay
+							style="margin-top: 60px;"
+							src="https://www.youtube.com/embed/GdlSWFyYA8s?si=UYhxyfIy-pQ5Ffbf"
+							title="YouTube video player" >
+                           </iframe>
+					</div>
+					<!--categorie menu end-->
+
+					<!--wishlist block start-->
+					<div>
+						<iframe
+							src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.8025892826463!2d108.16738507468429!3d16.07573073926476!
+                                        2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219b509a30cfb%3A0xb93a05e26b3b28ff!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIEZQVCB
+                                        Qb2x5dGVjaG5pYw!5e0!3m2!1svi!2s!4v1697426098224!5m2!1svi!2s"
+							width="300" height="500"
+							style="border: 2px solid; margin-top: 15px;" ></iframe>
+					</div>
+					<!--wishlist block end-->
+
+					<!--newsletter block start-->
+
+					<!--newsletter block end-->
+
+					<!--sidebar banner-->
+					<!--sidebar banner end-->
+
+
+
+				</div>
+				<div class="col-lg-9 col-md-12">
+					<!--banner slider start-->
+					<div class="banner_slider slider_1">
+						<div class="slider_active owl-carousel">
+							<div class="single_slider"
+								style="background-image: url(/shopview/assets/img/banner/bannermain.jpg)">
+								<div class="slider_content">
+									<div class="slider_content_inner">
+										<h1>Adela shop</h1>
+										<p>Bringing the latest products and good quality.</p>
+										<a href="#">shop now</a>
+									</div>
+								</div>
+							</div>
+							<div class="single_slider"
+								style="background-image: url(/shopview/assets/img/banner/banner02.jpg)">
+								<div class="slider_content">
+									<div class="slider_content_inner">
+										<h1>Adela shop</h1>
+										<p>Many attractive offers and big discounts.</p>
+										<a href="#">shop now</a>
+									</div>
+								</div>
+							</div>
+							<div class="single_slider"
+								style="background-image: url(/shopview/assets/img/banner/banner03.png)">
+								<div class="slider_content">
+									<div class="slider_content_inner">
+										<h1>Adela shop</h1>
+										<p>Detailed and dedicated consultation.</p>
+										<a href="#">shop now</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--banner slider start-->
+
+					<!--new product area start-->
+					<div class="new_product_area">
+						<div class="block_title">
+							<h3>New Products</h3>
+						</div>
+						<div class="row">
+							<div class="product_active owl-carousel">
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/adidas1.jpg" alt=""></a>
+											<div class="img_icone">
+												<img src="/shopview/assets/img/cart/span-new.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$40.00</span>
+											<h3 class="product_title">
+												<a href="product.html">ULTRABOOST LIGHT PARLEY NON DYED</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+					<!--new product area start-->
+
+					<!--featured product start-->
+					<div class="featured_product">
+						<div class="block_title">
+							<h3>Hot Products</h3>
+						</div>
+						<div class="row">
+							<div class="product_active owl-carousel">
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/nike1.jpg" alt=""></a>
+											<div class="hot_img">
+												<img src="/shopview/assets/img/cart/span-hot.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$60.00</span>
+											<h3 class="product_title">
+												<a href="product.html">AIR JORDAN 1 LOW NAVY (2004)</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/nike2.jpg" alt=""></a>
+											<div class="hot_img">
+												<img src="/shopview/assets/img/cart/span-hot.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$50.00</span>
+											<h3 class="product_title">
+												<a href="product.html">AIR JORDAN 1 LOW SHADOW BROWN</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/nike3.jpg" alt=""></a>
+											<div class="hot_img">
+												<img src="assets/img/cart/span-hot.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$70.00</span>
+											<h3 class="product_title">
+												<a href="product.html">AIR JORDAN 1 LOW LUCKY
+													GREEN/AQUATONE</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/nike4.jpg" alt=""></a>
+											<div class="hot_img">
+												<img src="/shopview/assets/img/cart/span-hot.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$60.00</span>
+											<h3 class="product_title">
+												<a href="product.html">AIR JORDAN 1 LOW LUCKY GREEN</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3">
+									<div class="single_product">
+										<div class="product_thumb">
+											<a href="/shop/product"><img
+												src="/shopview/assets/img/product/nike5.jpg" alt=""></a>
+											<div class="hot_img">
+												<img src="/shopview/assets/img/cart/span-hot.png" alt="">
+											</div>
+
+										</div>
+										<div class="product_content">
+											<span class="product_price">$50.00</span>
+											<h3 class="product_title">
+												<a href="product.html">AIR JORDAN 1 LOW SE MIGHTY
+													SWOOSHERS</a>
+											</h3>
+										</div>
+										<div class="product_info">
+											<ul>
+												<li><a href="/shop/product" title=" Add to Wishlist ">View
+														Detail</a></li>
+												<li><a href="#" data-toggle="modal"
+													data-target="#modal_box" title="Quick view">Add to cart</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--featured product end-->
+
+
+
+					<!--brand logo strat-->
+					<div class="brand_logo mb-60">
+						<div class="block_title">
+							<h3>Brands</h3>
+						</div>
+						<div class="row">
+							<div class="brand_active owl-carousel">
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand11.jpg" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand1.png" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand2.png" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand3.png" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand4.png" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand10.png" alt=""></a>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div class="single_brand">
+										<a href="#"><img
+											src="/shopview/assets/img/brand/brand9.png" alt=""></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--brand logo end-->
+				</div>
+			</div>
+		</div>
+		<!--pos home section end-->
+		<div class="modal fade" id="modal_box" tabindex="-1" role="dialog"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<div class="modal_body">
+						<div class="container">
+							<div class="row">
+								<div class="product_details video_details">
+									<div class="row">
+										<div class="col-lg-5 col-md-6">
+											<div class="single_product_pics">
+												<div class="row">
+
+													<div class="col-lg-12 image_col order-lg-2 order-1">
+														<div class="single_product_image">
+															<div class="single_product_image_background">
+																<img class="main-image"
+																	src="/shopview/assets/img/product/a10.jpg"
+																	alt="Product Image">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col">
+														<div class="product_slider_container"
+															style="margin-top: 5px; max-height: 200px">
+															<div
+																class="owl-carousel owl-theme product_slider imageSmall">
+																<!-- Danh sách ảnh nhỏ -->
+																<div class="owl-item product_slider_item">
+																	<div class="product_image">
+																		<img class="thumbnail-image"
+																			src="/shopview/assets/img/product/a11.jpg" alt="">
+																	</div>
+																</div>
+																<!-- Thêm danh sách các ảnh nhỏ khác -->
+															</div>
+
+															<!-- Slider Navigation -->
+
+															<div
+																class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+																<i class="fa fa-chevron-left" aria-hidden="true"></i>
+															</div>
+															<div
+																class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+																<i class="fa fa-chevron-right" aria-hidden="true"></i>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-7 col-md-7 col-sm-12 signle">
+											<div class="modal_right">
+												<div class="modal_title mb-10">
+													<h2>Handbag feugiat</h2>
+												</div>
+												<div class="modal_price mb-10">
+													<span class="new_price">$64.99</span> <span
+														class="old_price">$78.99</span>
+												</div>
+												<div class="modal_content mb-10">
+													<p>Short-sleeved blouse with feminine draped sleeve
+														detail.</p>
+												</div>
+												<div class="product_d_size mb-20">
+													<div class="modal_size mb-15">
+														<h2>size</h2>
+														<ul>
+															<li><input type="radio" id="size-36" name="size"
+																value="36"> <label for="size-36">36</label></li>
+															<li><input type="radio" id="size-37" name="size"
+																value="37"> <label for="size-37">37</label></li>
+															<li><input type="radio" id="size-38" name="size"
+																value="38"> <label for="size-38">38</label></li>
+															<li><input type="radio" id="size-39" name="size"
+																value="39"> <label for="size-39">39</label></li>
+														</ul>
+													</div>
+												</div>
+												<div>
+													<div class="sidebar_widget color ">
+														<h2>Choose Color</h2>
+														<div class="widget_color">
+															<ul>
+																<li><input class="color-button" type="radio"
+																	id="color_red" name="color"> <label
+																	for="color_red">Red</label></li>
+																<li><input class="color-button" type="radio"
+																	id="color_white" name="color"> <label
+																	for="color_white">White</label></li>
+																<li><input class="color-button" type="radio"
+																	id="color_black" name="color"> <label
+																	for="color_black">Black</label></li>
+
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="modal_add_to_cart mb-15">
+													<form action="#">
+														<input min="0" max="100" step="2" value="1" type="number">
+														<button type="submit">add to cart</button>
+													</form>
+												</div>
+												<div class="modal_description mb-15">
+													<p>Lorem ipsum dolor sit amet, consectetur adipisicing
+														elit, sed do eiusmod tempor incididunt ut labore et dolore
+														magna aliqua. Ut enim ad minim veniam,</p>
+												</div>
+												<div class="modal_social">
+													<h2>Share this product</h2>
+													<ul>
+														<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+														<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+														<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+														<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+														<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<script src="/shopview/assets/js/trangchu.js"></script>
+	</div>
+
+</body>
+</html>

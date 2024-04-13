@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/fragments/home.html}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<style>
+.discount-exactly {
+	display: none;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 40px;
+	height: 20px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 16px;
+	width: 16px;
+	left: 2px;
+	bottom: 2px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked+.slider {
+	background-color: #2196F3;
+}
+
+input:focus+.slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+	-webkit-transform: translateX(20px);
+	-ms-transform: translateX(20px);
+	transform: translateX(20px);
+}
+
+.slider.round {
+	border-radius: 20px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
+.switch label {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: 50px;
+}
+</style>
+		<div class="container-fluid">
+			<div class="card mb-4">
+				<!-- <div class="card-header py-3">
+            <h2 class="m-0 font-weight-bold text-primary">Product</h2>
+          </div> -->
+				<div class="card-body">
+					<div class="row justify-content-between">
+						<div class="col-4">
+							<h2>Add Promotion</h2>
+							<div class="pad promotion-box">
+								<input th:id="id" type="text" class="d-none">
+								<div class="form-group">
+									<div>
+										<span style="color: red">(Activation code only includes
+											capital letters from A-Z and numbers from 0-9 and hyphens
+											(length from 4 - 16 characters)]</span> <br> <label
+											class="required-label" for="code">Activation code</label>
+
+									</div>
+									<input type="text" class="form-control" id="couponCode">
+									<div th:id="couponCode-error" class="text-danger form-text "></div>
+								</div>
+								<div class="form-group">
+									<div>
+										<label class="required-label" for="name">Name of
+											promotion program</label>
+									</div>
+									<input type="text" class="form-control" id="name">
+									<div th:id="name-error" class="text-danger form-text "></div>
+								</div>
+
+								<div class="form-group">
+									<label for="discount-type" class="required-label">Promotion
+										according to:</label> <select class="form-control" id="discount-type"
+										onchange="toggleDiscountInput()">
+
+										<option value="2">Direct amount</option>
+										<option value="1">Percent (%)</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<div>
+										<label class="required-label" for="discount-value">Discount
+											level</label> <span class="invalid-feedback"
+											id="invalid-feedback-discount-value"></span>
+									</div>
+									<input type="text" min="1" class="form-control"
+										id="discountValue">
+									<div th:id="discountValue-error" class="text-danger form-text "></div>
+								</div>
+
+								<div class="form-group discount-exactly">
+									<div>
+										<label class="required-label" for="max-value">Maximum
+											discount</label>
+									</div>
+									<input type="text" min="1" class="form-control" id="maxValue">
+									<div th:id="maxValue-error" class="text-danger form-text "></div>
+								</div>
+								<div class="form-group">
+									<div>
+										<label class="required-label" for="expired-date">Expiration
+											date</label>
+									</div>
+									<input type="date" class="form-control" id="expiredDate">
+									<div th:id="expiredDate-error" class="text-danger form-text "></div>
+								</div>
+								<div class="form-group">
+									<label class="switch"> <input type="checkbox"
+										id="active" checked> <span class="slider round"></span>
+									</label> <label for="active">Activate promotion</label>
+								</div>
+								<div class="form-group">
+									<label class="switch"> <input type="checkbox"
+										id="ispublic" checked> <span class="slider round"></span>
+									</label> <label for="ispublic">Publicize promotional programs</label>
+								</div>
+								<button type="submit" class="btn btn-primary"
+									th:id="save-promotion-value" onclick="savePromotion()">Save
+									changes</button>
+								<button type="button" class="btn btn-danger"
+									onclick="clearFrom()">Clear</button>
+							</div>
+
+
+						</div>
+
+						<div class="col-8">
+							<div class="row">
+								<div class="col-7"></div>
+								<div class="col-md-5">
+									<div class="input-group">
+										<input id="key" type="text" name="keyword5" value=""
+											class="form-control" placeholder="Search by promotion name">
+										<div class="input-group-append">
+											<button id="searchButton" class="btn btn-secondary">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<table class="table table-striped" th:id="promotion-table">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Coupon_Code</th>
+											<th scope="col">Promotion Name</th>
+											<th scope="col">Discount value</th>
+											<th scope="col">Visible</th>
+											<th scope="col">Status</th>
+											<th scope="col">CreateAt</th>
+											<th scope="col">UpdateAt</th>
+											<th scope="col">Expired</th>
+											<th scope="col"></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+							<nav class="float-right" th:id="paging"></nav>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+		<script src="/adminview/js/promotion.js"></script>
+
+	</div>
+
+</body>
+</html>

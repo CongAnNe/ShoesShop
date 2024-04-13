@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/fragments/home.html}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<style>
+.pic>img {
+	width: 50px;
+	height: 50px;
+	object-fit: contain;
+}
+
+#selected-images {
+	display: flex;
+}
+
+.selected-image {
+	margin-left: 10px
+}
+
+.remove-selected-image:hover {
+	cursor: pointer;
+	color: red;
+}
+
+#category:hover, #brand:hover {
+	cursor: pointer;
+}
+
+.truncate {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 100px;
+}
+</style>
+		<div class="container-fluid">
+			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+				<li class="nav-item"><a class="nav-link active"
+					id="pills-home-tab" data-toggle="pill" href="#pills-home"
+					role="tab" aria-controls="pills-home" aria-selected="true">Product</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" id="pills-profile-tab"
+					data-toggle="pill" href="#pills-profile" role="tab"
+					aria-controls="pills-profile" aria-selected="false">Variant</a></li>
+			</ul>
+			<div class="tab-content" id="pills-tabContent">
+				<div class="tab-pane fade show active" id="pills-home"
+					role="tabpanel" aria-labelledby="pills-home-tab">
+
+					<div class="card mb-4">
+						<!-- <div class="card-header py-3">
+					<h2 class="m-0 font-weight-bold text-primary">Product</h2>
+				</div> -->
+						<div class="card-body">
+							<div class="row ">
+								<div class="col-4 justify-content-between">
+									<h2>Add Product</h2>
+									<div id="addProductForm">
+										<div class="form-group">
+											<input th:id="id" type="text" class="d-none">
+											<div class="form-group">
+												<label for="title" class="font-weight-bold">Title:</label> <input
+													type="text" class="form-control" th:id="title" name="title"
+													placeholder="Enter product title" required>
+												<!-- Thẻ div để hiển thị thông báo lỗi -->
+												<div th:id="title-error" class="text-danger form-text "></div>
+											</div>
+										</div>
+										<!-- Select chọn category -->
+										<div class="form-group">
+											<label for="category" class="font-weight-bold">Category:</label>
+											<select class="form-control" th:id="category"
+												aria-label="Default select example">
+												<option value="">Select category</option>
+												<!-- Thêm các tùy chọn category khác nếu cần -->
+											</select>
+											<!-- Thẻ div để hiển thị thông báo lỗi -->
+											<div th:id="category-error" class="text-danger form-text "></div>
+										</div>
+										<!-- Select chọn brand -->
+										<div class="form-group">
+											<label for="" brand"" class="font-weight-bold">Brand:</label>
+											<select class="form-control" th:id="brand"
+												aria-label="Default select example">
+												<option value="">Select brand</option>
+												<!-- Thêm các tùy chọn brand khác nếu cần -->
+											</select>
+											<!-- Thẻ div để hiển thị thông báo lỗi -->
+											<div th:id="brand-error" class="text-danger form-text "></div>
+										</div>
+										<div class="form-group">
+											<label for="description" class="font-weight-bold">Description:</label>
+											<textarea class="form-control" th:id="discription"
+												name="description" rows="4"
+												placeholder="Enter product description" required></textarea>
+											<!-- Thẻ div để hiển thị thông báo lỗi -->
+											<div th:id="discription-error" class="text-danger form-text"></div>
+										</div>
+										<div class="input-group">
+											<input type="file" class="form-control"
+												placeholder="Recipient's username"
+												aria-label="Recipient's username"
+												aria-describedby="button-addon2" th:id="file-input" multiple>
+											<button class="btn btn-danger" type="button"
+												onclick="clearImage()" id="button-addon2">Clear
+												image</button>
+										</div>
+										<div th:id="file-input-error" class="text-danger form-text"></div>
+										<!-- Hiển thị các ảnh đã chọn -->
+										<div th:id="selected-images"></div>
+										<br>
+										<!-- Add more product fields as needed -->
+										<button type="submit" class="btn btn-primary"
+											th:id="save-product-value" onclick="saveProduct()">Save
+											changes</button>
+										<button type="button" class="btn btn-danger"
+											onclick="clearFrom()">Clear</button>
+									</div>
+								</div>
+
+								<div class="col-8">
+									<div class="row">
+										<div class="col-7"></div>
+										<div class="col-md-5">
+											<div class="input-group">
+												<input id="key" type="text" name="keyword5" value=""
+													class="form-control" placeholder="Search by title">
+												<div class="input-group-append">
+													<button id="searchButton" class="btn btn-secondary">
+														<i class="fas fa-search"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="table-responsive">
+											<table class="table table-striped" th:id="product-table">
+												<thead>
+													<tr>
+														<th scope="col">#</th>
+														<th scope="col">Image</th>
+														<th scope="col">Title</th>
+														<th scope="col">Category</th>
+														<th scope="col">Brand</th>
+														<th scope="col">Description</th>
+														<th scope="col">CreateAt</th>
+														<th scope="col">UpdateAt</th>
+														<th scope="col">Add variant</th>
+														<th scope="col">Edit</th>
+														<th scope="col">Delete</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th>1</th>
+														<td class="text-center"><img class="pic"
+															src="https://www.freepnglogos.com/uploads/shoes-png/dance-shoes-png-transparent-dance-shoes-images-5.png"
+															alt=""></td>
+														<td>Mark</td>
+														<td>Otto</td>
+														<td>@mdo</td>
+														<td></td>
+														<td></td>
+														<td></td>
+														<td>
+															<button type="button" class="btn btn-primary"
+																data-toggle="modal" data-target="#variantModal">Add
+																Variant</button>
+														</td>
+														<td><button class="btn btn-warning">Edit</button></td>
+														<td><button class="btn btn-danger">Delete</button></td>
+
+													</tr>
+												</tbody>
+
+											</table>
+										</div>
+									</div>
+									<nav class="float-right" th:id="paging"></nav>
+								</div>
+
+							</div>
+							<!-- Modal delete-->
+							<div class="modal fade" id="deleteProductmodal" tabindex="-1"
+								role="dialog" aria-labelledby="confirmDeleteModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="confirmDeleteModalLabel">Delete
+												Product</h5>
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p>Are you sure you want to delete?</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Hủy</button>
+											<button type="button" class="btn btn-danger"
+												id="delete-product-value">Xóa</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="tab-pane fade" id="pills-profile" role="tabpanel"
+					aria-labelledby="pills-profile-tab">
+					<div class="card">
+						<div class="card-body">
+							<div class="row align-items-center justify-content-center">
+								<div class="col-lg-3 mb-4">
+									<div class="form-group">
+										<label class="col-form-label">Size:</label> <select
+											th:id="size-select" class="form-control"
+											aria-label="Choose size">
+											<option value='' selected>Choose size</option>
+											<!-- Add your size options here -->
+										</select>
+									</div>
+								</div>
+								<div class="col-lg-3 mb-4">
+									<div class="form-group">
+										<label class="col-form-label">Color:</label> <select
+											th:id="color-select" class="form-control"
+											aria-label="Choose color">
+											<option value='' selected>Choose color</option>
+											<!-- Add your size options here -->
+										</select>
+									</div>
+								</div>
+
+								<div class=" col-lg-4 mb-5">
+									<label class="col-form-label">KeyWord:</label>
+									<div class="input-group">
+										<input id="keyVariant" type="text" name="keyword5" value=""
+											class="form-control" placeholder="">
+										<div class="input-group-append">
+											<button id="searchButtonVariant" class="btn btn-primary">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+
+								</div>
+								<div class=" col-lg-2 mb-2 text-center">
+									<button class="btn btn-warning text-center" id="reset">
+										<span><i class="fas fa-sync"></i></span>
+									</button>
+								</div>
+
+							</div>
+							<table class="table table-striped" th:id="variant-table">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Title</th>
+										<th scope="col">Price</th>
+										<th scope="col">Current Price</th>
+										<th scope="col">Quantity</th>
+										<th scope="col">Size</th>
+										<th scope="col">Color</th>
+										<th scope="col">Buy Count</th>
+										<th scope="col">CreateAt</th>
+										<th scope="col">UpdateAt</th>
+
+										<th scope="col"></th>
+										<th scope="col"></th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>1</th>
+										<td>Giày ULTRABOOST LIGHT PARLEY CORE BLACK</td>
+										<td>1,600,000</td>
+										<td>1,300,000</td>
+										<td>20</td>
+										<td>30</td>
+										<td>White</td>
+										<td></td>
+										<td></td>
+										<td>
+											<button class="btn btn-warning">Edit</button>
+											<button class="btn btn-danger">Delete</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<nav class="float-right" th:id="paging-variant"></nav>
+						</div>
+
+					</div>
+				</div>
+				<!-- Variant Modal -->
+				<div class="modal fade" id="variantModal" tabindex="-1"
+					role="dialog" aria-labelledby="variantModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="variantModalLabel">Add Variant</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<!-- Variant Form -->
+								<div>
+									<div>
+										<div>
+											<input th:id="variantId" type="text" class="d-none">
+											<input th:id="productId" type="text" class="d-none">
+											<div class="input-group row">
+
+												<div class="col-6">
+													<label class="col-form-label">Size:</label> <select
+														th:id="size" class="form-control" aria-label="Choose size">
+														<option value='' selected>Choose size</option>
+														<!-- Add your size options here -->
+													</select> <small th:id="size-error"
+														class="text-danger form-text error"></small>
+												</div>
+
+												<div class="col-6">
+													<label class="col-form-label">Color:</label> <select
+														th:id="color" class="form-control"
+														aria-label="Default select example">
+														<option value="">Choose color</option>
+														<!-- Add your color options here -->
+													</select> <small th:id="color-error"
+														class="text-danger form-text error"></small>
+												</div>
+
+											</div>
+											<hr>
+											<div class="row">
+												<label class="col-2 col-form-label">Price:</label>
+												<div class="col-10">
+													<div class="input-group">
+														<input th:id="price" type="text" class="form-control">
+														<div class="input-group-append">
+															<span class="input-group-text">$</span>
+														</div>
+													</div>
+													<small style="height: 15px;" th:id="price-error"
+														class="text-danger form-text error"></small>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<label class="col-2 col-form-label">Current Price:</label>
+												<div class="col-10">
+													<div class="input-group">
+														<input th:id="currentPrice" type="text"
+															class="form-control">
+														<div class="input-group-append">
+															<span class="input-group-text">$</span>
+														</div>
+													</div>
+													<small style="height: 15px" th:id="currentPrice-error"
+														class="text-danger form-text error"></small>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<label class="col-2 col-form-label">Quantity:</label>
+												<div class="col-10">
+													<div class="input-group">
+														<input th:id="quantity" type="text" class="form-control">
+													</div>
+													<small style="height: 15px" th:id="quantity-error"
+														class="text-danger form-text error"></small>
+												</div>
+											</div>
+											<hr>
+											<div class="row">
+												<label class="col-2 col-form-label">Note:</label>
+												<div class="col-10">
+													<div class="input-group">
+														<textarea class="form-control" th:id="discription"
+															name="description" rows="4" required></textarea>
+														<small style="height: 15px" th:id="description-error"
+															class="text-danger form-text error"></small>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+
+								<button type="button" class="btn bg-primary"
+									th:id="save-variant-value" onclick="saveVariant()">Save</button>
+								<button onclick="clearFromVariant()" class="btn btn-danger"
+									type="button">Clear</button>
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade" id="deleteVariantmodal" tabindex="-1"
+					role="dialog" aria-labelledby="confirmDeleteModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="confirmDeleteModalLabel">Delete
+									Variant</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete?</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-danger"
+									id="delete-variant-value">Xóa</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+		<script src="/adminview/js/product.js"></script>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/fragments/home.html}">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+
+		<div class="container-fluid">
+			<div class="card mb-4">
+				<div class="card-header">
+					<h3 class=" font-weight-bold text-primary">Order Detail</h3>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<a href="/order/admin/all" class="btn btn-primary mb-3"><i
+								class="bi bi-arrow-left-circle-fill"></i> Quay lại</a>
+							<div class="table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>STT</th>
+											<th>Title</th>
+											<th>Quantity</th>
+											<th>Color</th>
+											<th>Size</th>
+											<th>Price</th>
+											<th>CurrentPrice</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="orderDetail,index : ${orderDetailsResponseDtos}">
+											<td th:text="${index.count}"></td>
+											<td th:text="${orderDetail.variantResponseDto.title}"></td>
+											<td th:text="${orderDetail.number}"></td>
+											<td th:text="${orderDetail.variantResponseDto.color}"></td>
+											<td th:text="${orderDetail.variantResponseDto.size}"></td>
+											<td
+												th:text="${#numbers.formatInteger(orderDetail.price,3,'POINT')}+'&#8363;'"></td>
+											<td
+												th:text="${#numbers.formatInteger(orderDetail.curentPrice,3,'POINT')}+'&#8363;'"></td>
+											<td
+												th:text="${#numbers.formatInteger(orderDetail.totalMoney,3,'POINT')}+'&#8363;'"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-6">
+							<div class="card bg-light bg-gradient">
+								<div class="card-body row">
+									<h5
+										class="font-weight-bold text-primary mb-3 col-12 text-center">Order
+										Information</h5>
+									<br /> <b class="col-6">Order ID</b>
+									<p class="col-6" th:text="${orderResponseDto.id}"></p>
+									<b class="col-6">Order Date </b>
+									<p class="col-6" th:text="${orderResponseDto.createAt}"></p>
+									<th:block th:if="${orderResponseDto.completedAt}!=null">
+										<b class="col-6">Complate Date </b>
+										<p class="col-6" th:text="${orderResponseDto.completedAt}">
+										</p>
+									</th:block>
+									<b class="col-6">Number</b>
+									<p class="col-6" th:text="${number}"></p>
+									<b class="col-6">Status</b>
+									<p class="col-6">
+										<span th:switch="${orderResponseDto.status}"> <span
+											th:case="1">New Order</span> <span th:case="2">Canceled
+												Order</span> <span th:case="3">Confirm Order</span> <span
+											th:case="4">Completed Order</span>
+										</span>
+									</p>
+									<b class="col-6 text-danger">Total Money </b>
+									<p class="col-6 text-danger"
+										th:text="${#numbers.formatInteger(orderResponseDto.totalMoney,3,'POINT')}+'&#8363;'"></p>
+								</div>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="card bg-light bg-gradient">
+								<div class="card-body row">
+									<h5
+										class="font-weight-bold text-primary text-center mb-3 col-12">Shipment
+										Details</h5>
+									<b class="col-6">FullName</b>
+									<p class="col-6" th:text="${orderResponseDto.fullName}"></p>
+									<!-- <b class="col-6">Email: </b>
+                                        <p class="col-6" th:text="${orderResponseDto.email}"></p> -->
+									<b class="col-6">Phone Number</b>
+									<p class="col-6" th:text="${orderResponseDto.phone}"></p>
+									<b class="col-6">Address</b>
+									<p class="col-6" th:text="${orderResponseDto.address}"></p>
+									<b class="col-6 text-danger">Note</b>
+									<p class="col-6" th:text="${orderResponseDto.note}"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+		<script>
+			
+		</script>
+
+	</div>
+
+</body>
+</html>

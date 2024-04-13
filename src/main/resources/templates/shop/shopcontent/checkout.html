@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="shortcut icon" type="image/x-icon"
+	href="shopview/assets/img/l.png">
+
+<!-- all css here -->
+<link rel="stylesheet" href="/shopview/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/shopview/assets/css/plugin.css">
+<link rel="stylesheet" href="/shopview/assets/css/bundle.css">
+<link rel="stylesheet" href="/shopview/assets/css/style.css">
+<link rel="stylesheet" href="/shopview/assets/css/responsive.css">
+<script src="/shopview/assets/js/vendor/modernizr-2.8.3.min.js"></script>
+
+
+<!--
+    - favicon
+  -->
+<link rel="shortcut icon"
+	href="/shopview/assets/images/logo/favicon.ico" type="image/x-icon">
+
+<!--
+    - custom css link
+  -->
+<link rel="stylesheet" href="/shopview/assets/css/style-prefix.css">
+
+</head>
+<body>
+	<div class="corner-popup" onclick="openCenterPopup()">Voucher
+			giảm giá</div>
+
+
+		<div id="centerPopup" class="center-popup">
+
+			<div id="closeButton" onclick="closeCenterPopup()">X</div>
+
+			<div class="voucher" id="Promotion">
+				<div class="margin-title">
+					<div class="title-vocher">
+						<h4>Giảm giá 50%</h4>
+					</div>
+					<img class="img-vocher"
+						src="https://cdn-icons-png.flaticon.com/128/3258/3258499.png"
+						alt="Sản phẩm 1">
+				</div>
+				<div class="voucher-details">
+					<button class="review-button" data-order-id="12345"
+						id="discountCode" onclick="copyToClipboard()">Coppy mã</button>
+					<div class="voucher-header">Mã giảmn giá 50K áp dụng cho toàn
+						bộ đơn hàng</div>
+					<ul>
+						<li>Giảm tối đa: 50.000</li>
+						<li>Ngày hết hạn: 30/11/2023</li>
+						<li>Thể lệ: Cho toàn bộ đơn hàng</li>
+					</ul>
+
+					<div class="codevoucher" id="voucherCode">
+						Your Voucher Code:
+						<p class="codevoucher" id="predefinedText">JSPO2K3M</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	<div th:replace="shop/fragments/header::header"></div>
+	<div class="container">
+		<div class="breadcrumbs_area">
+			<div class="row">
+				<div class="col-12">
+					<div class="breadcrumb_content">
+						<ul>
+							<li><a href="index.html">home</a></li>
+							<li><i class="fa fa-angle-right"></i></li>
+							<li>checkout</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--breadcrumbs area end-->
+
+
+		<!--Checkout page section-->
+		<div class="Checkout_section">
+			<div class="row">
+				<div class="col-12"></div>
+			</div>
+			<div class="checkout_form">
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<form action="#">
+							<h3>Billing Details</h3>
+							<div class="row">
+								<div class="col-lg-4 mb-30">
+									<label>Province/City<span>*</span></label> <select
+										name="province" id="province">
+										<option value="">Select province</option>
+									</select> <small th:id="province-error"
+										class="text-danger form-text error"></small>
+
+								</div>
+								<div class="col-lg-4 mb-30">
+									<label>District<span>*</span></label> <select id="district"
+										name="district">
+										<option value="">Select district</option>
+									</select> <small th:id="district-error"
+										class="text-danger form-text error"></small>
+								</div>
+								<div class="col-lg-4 mb-30">
+									<label>Wards <span>*</span></label> <select id="ward"
+										name="ward">
+										<option value="">Select ward</option>
+									</select> <small th:id="ward-error" class="text-danger form-text error"></small>
+								</div>
+								<div class="col-12 mb-30">
+									<label>Street address <span>*</span></label> <input
+										id="address" name="address" placeholder="" type="text"
+										th:value="${accountResponseDto.address}" /> <small
+										style="font-size: 12px;" th:id="address-error"
+										class="text-danger form-text error"></small>
+								</div>
+								<div class="col-lg-6 mb-30">
+									<label>Full Name <span>*</span></label> <input type="text"
+										id="fullName" name="fullName"
+										th:value="${accountResponseDto.fullName}" /> <small
+										style="font-size: 12px;" th:id="fullName-error"
+										class="text-danger form-text error"></small>
+
+								</div>
+								<div class="col-lg-6 mb-30">
+									<label> Phone <span>*</span></label> <input type="text"
+										name="phone_Number" id="phone_Number"
+										th:value="${accountResponseDto.phone}" /> <small
+										style="font-size: 12px;" th:id="phone_Number-error"
+										class="text-danger form-text error"></small>
+								</div>
+								<div class="col-lg-12 mb-30">
+									<label> Email Address <span>*</span></label> <input type="text"
+										th:value="${accountResponseDto.email}" readonly />
+								</div>
+								<!-- 	<div class="col-lg-4 mb-30">
+									<label>Province/City<span>*</span></label> <select
+										name="province" id="province">
+										<option value="">Select province</option>
+									</select>
+				<small  th:id="province-error" class="text-danger form-text error"></small>
+									
+								</div>
+								<div class="col-lg-4 mb-30">
+									<label>District<span>*</span></label> <select id="district"
+										name="district">
+										<option value="">Select district</option>
+									</select>
+	      <small  th:id="district-error" class="text-danger form-text error"></small>								
+								</div>
+								<div class="col-lg-4 mb-30">
+									<label>Wards <span>*</span></label> <select id="ward"
+										name="ward">
+										<option value="">Select ward</option>
+									</select>
+      	 <small  th:id="ward-error" class="text-danger form-text error"></small>																
+								</div> -->
+
+
+								<div class="col-12 mb-30">
+									<label>Notes <span>*</span></label>
+									<textarea placeholder="" rows="4" cols="4" id="note"
+										name="note">
+                                            </textarea>
+
+								</div>
+
+
+							</div>
+						</form>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<form action="#">
+							<h3>Your order</h3>
+
+							<div class="order_table table-responsive mb-30">
+								<table id="checkoutTable">
+									<thead>
+										<tr>
+											<th>Image</th>
+											<th>Shoe name</th>
+											<th>Shoe color</th>
+											<th>Shoe size</th>
+											<th>Quantity</th>
+											<th>Price</th>
+										</tr>
+									</thead>
+									<tbody id="checkoutBody">
+
+										<tr th:each="cartItem : ${cartResponseDtos}">
+
+											<td><input type="hidden" id="cartId" class="cartId"
+												th:value="${cartItem.cartId}"> <img
+												th:src="@{/upload/__${cartItem.images.inmageForSave}__}"
+												alt="" width="80" height="60" /></td>
+											<td th:text="${cartItem.productResponseDto.title}"></td>
+											<td th:text="${cartItem.variantResponseDto.color}"></td>
+											<td th:text="${cartItem.variantResponseDto.size}"></td>
+											<td th:text="${cartItem.quantity}"></td>
+											<td th:text="${cartItem.total}"></td>
+
+										</tr>
+
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="7">
+												<div class="coupon">
+													<label for="coupon_code">Do you have a discount
+														code? Please enter here</label>
+													<div class="coupon-input">
+														<input type="text" id="coupon_code" name="coupon_code"
+															placeholder="Enter your coupon code" />
+														<button type="button" id="applyCouponBtn"
+															class="apply_coupon">Apply discount code</button>
+
+
+													</div>
+													<small style="font-size: 14px;" th:id="couponCode-error"
+														class="text-danger form-text error"></small>
+												</div>
+
+											</td>
+										</tr>
+										<tr>
+											<th>Discount code</th>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><strong id="discountTypeDisplay">0đ</strong></td>
+										</tr>
+										<tr>
+											<th>Tổng tiền</th>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td><strong id="total" th:text="${total}"
+												style="font-weight: bold;"></strong></td>
+
+											<input type="hidden" th:value="${total}"
+												id="originalTotalValue" name="originalTotalValue">
+
+										</tr>
+
+
+
+									</tfoot>
+								</table>
+							</div>
+
+
+
+							<div class="payment_method">
+								<!-- Thêm mã giảm giá ở đây -->
+								<div class="panel-default">
+									<div id="method" class="collapse one" data-parent="#accordion">
+										<div class="card-body1">
+											<p>Please send a check to Store Name, Store Street, Store
+												Town, Store State / County, Store Postcode.</p>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="panel-default" onclick="$('#payment_info').hide()">
+
+									<input id="payment_bank_transfer" name="check_method"
+										type="radio" checked data-target="createp_account"> <label
+										class="custom-control-label" for="credit">Payment on
+										delivery</label>
+
+								</div>
+								<div class="panel-default" onclick="$('#payment_info').show()">
+									<input id="payment_bank_transfer" name="check_method"
+										type="radio" data-target="createp_account"> <label
+										class="custom-control-label" for="debit">Payment by
+										bank transfer</label>
+								</div>
+								<div class="row" id="payment_info" style="display: none;">
+									<div class="col-md-6 mb-3">
+										<label for="cc-name">
+											<h5>STK : 1903 7531 0590 11</h5>
+											<div>Ngân Hàng : Techcombank</div>
+											<div>Chi Nhánh : Quảng Nam</div>
+											<div>Chủ TK : PHAM MINH TRUNG</div>
+											<h5>
+												<br> HOTLINE:&nbsp; 0335.247.942
+											</h5>
+										</label>
+									</div>
+								</div>
+								<div class="order_button">
+									<button id="checkoutButton" type="button">Proceed To
+										Order</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="shop/fragments/footer::footer"></div>
+	<script src="/shopview/assets/js/vendor/jquery-1.12.0.min.js"></script>
+	<script src="/shopview/assets/js/popper.js"></script>
+	<script src="/shopview/assets/js/bootstrap.min.js"></script>
+	<script src="/shopview/assets/js/ajax-mail.js"></script>
+	<script src="/shopview/assets/js/plugins.js"></script>
+
+	<script type="module"
+		src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule
+		src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+		integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js"
+		integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
+	<script src="/shopview/assets/js/checkout.js"></script>
+
+
+
+</body>
+</html>
